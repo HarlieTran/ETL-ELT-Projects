@@ -1,0 +1,205 @@
+
+<!DOCTYPE Metadata [
+  <!ENTITY % BIND_VALUES PUBLIC "OLAP BIND VALUES" "OLAP METADATA">
+  %BIND_VALUES;
+  ]>
+<Metadata
+  Version="2.1"
+  MinimumDatabaseVersion="12.2.0.0">
+  <Cube
+    ETViewName="FINAL_SAL_COM_TRACK_VIEW"
+    Name="FINAL_SAL_COM_TRACK"
+    DefaultMeasure="SALARY">
+    <Measure>
+      <BaseMeasure
+        SQLDataType="NUMBER"
+        AllowAutoDataTypeChange="True"
+        ETMeasureColumnName="SALARY"
+        Name="SALARY">
+        <Description
+          Type="LongDescription"
+          Language="AMERICAN"
+          Value="Salary">
+        </Description>
+        <Description
+          Type="ShortDescription"
+          Language="AMERICAN"
+          Value="Salary">
+        </Description>
+        <Description
+          Type="Description"
+          Language="AMERICAN"
+          Value="Salary">
+        </Description>
+      </BaseMeasure>
+    </Measure>
+    <Measure>
+      <BaseMeasure
+        SQLDataType="NUMBER"
+        AllowAutoDataTypeChange="True"
+        ETMeasureColumnName="COMMISSION_PCT"
+        Name="COMMISSION_PCT">
+        <Description
+          Type="LongDescription"
+          Language="AMERICAN"
+          Value="Commission Pct">
+        </Description>
+        <Description
+          Type="ShortDescription"
+          Language="AMERICAN"
+          Value="Commission Pct">
+        </Description>
+        <Description
+          Type="Description"
+          Language="AMERICAN"
+          Value="Commission Pct">
+        </Description>
+      </BaseMeasure>
+    </Measure>
+    <CubeMap
+      Name="MAP1"
+      IsSolved="False"
+      Query="FACTJOBHISTORY">
+      <MeasureMap
+        Name="SALARY"
+        Measure="SALARY"
+        Expression="FACTJOBHISTORY.SALARY">
+      </MeasureMap>
+      <MeasureMap
+        Name="COMMISSION_PCT"
+        Measure="COMMISSION_PCT"
+        Expression="FACTJOBHISTORY.COMMISSIONPCT">
+      </MeasureMap>
+      <CubeDimensionalityMap
+        Name="FINAL_DATES"
+        Dimensionality="FINAL_DATES"
+        MappedDimension="FINAL_DATES.FINAL_HRC_DATE.MONTH"
+        JoinCondition="FACTJOBHISTORY.DATEKEY = DIMDATE.DATEKEY"
+        Expression="DIMDATE.MONTHKEY">
+      </CubeDimensionalityMap>
+      <CubeDimensionalityMap
+        Name="FINAL_DEPARTMENTS"
+        Dimensionality="FINAL_DEPARTMENTS"
+        MappedDimension="FINAL_DEPARTMENTS.FINAL_HRC_DEAPRTMENT.DEPARTMENT"
+        JoinCondition="FACTJOBHISTORY.DEPARTMENTKEY = DIMDEPARTMENTS.DEPARTMENTKEY"
+        Expression="DIMDEPARTMENTS.DEPARTMENTKEY">
+      </CubeDimensionalityMap>
+      <CubeDimensionalityMap
+        Name="FINAL_JOBS"
+        Dimensionality="FINAL_JOBS"
+        MappedDimension="FINAL_JOBS.FINAL_HRC_JOB.JOB"
+        JoinCondition="FACTJOBHISTORY.JOBKEY = DIMJOBS.JOBKEY"
+        Expression="DIMJOBS.JOBKEY">
+      </CubeDimensionalityMap>
+      <CubeDimensionalityMap
+        Name="FINAL_LOCATIONS"
+        Dimensionality="FINAL_LOCATIONS"
+        MappedDimension="FINAL_LOCATIONS.FINAL_HRC_LOCATIONS.CITY"
+        JoinCondition="FACTJOBHISTORY.LOCATIONKEY = DIMLOCATIONS.LOCATIONKEY"
+        Expression="DIMLOCATIONS.CITY">
+      </CubeDimensionalityMap>
+      <CubeDimensionalityMap
+        Name="FINAL_EMPLOYEES"
+        Dimensionality="FINAL_EMPLOYEES"
+        MappedDimension="FINAL_EMPLOYEES.FINAL_HRC_EMPLOYEE.EMPLOYEE"
+        JoinCondition="FACTJOBHISTORY.EMPLOYEEKEY = DIMEMPLOYEES.EMPLOYEEKEY"
+        Expression="DIMEMPLOYEES.EMPLOYEEKEY">
+      </CubeDimensionalityMap>
+    </CubeMap>
+    <Organization>
+      <AWCubeOrganization
+        MVOption="REWRITE_WITH_ATTRIBUTES"
+        SparseType="COMPRESSED"
+        MeasureStorage="SHARED"
+        NullStorage="MV_READY"
+        CubeStorageType="NUMBER"
+        SQLCubeStorageType="NUMBER"
+        PrecomputePercent="40"
+        PrecomputePercentTop="0"
+        PartitionLevel="FINAL_DATES.FINAL_HRC_DATE.YEAR"
+        AW="&AW_NAME;">
+        <MVCreationOptions
+          RefreshOn="DEMAND"
+          RefreshType="FORCE"
+          UsingConstraintsClause="TRUSTED">
+        </MVCreationOptions>
+        <SparseDimension
+          Name="FINAL_DATES"/>
+        <SparseDimension
+          Name="FINAL_DEPARTMENTS"/>
+        <SparseDimension
+          Name="FINAL_JOBS"/>
+        <SparseDimension
+          Name="FINAL_LOCATIONS"/>
+        <SparseDimension
+          Name="FINAL_EMPLOYEES"/>
+        <DefaultBuild>
+          <![CDATA[BUILD SPEC SYS_DEFAULT
+(
+  CLEAR, 
+  LOAD, 
+  SOLVE
+)]]>
+        </DefaultBuild>
+        <BuildSpecifications>
+          <![CDATA[BUILD SPEC LOAD_AND_AGGREGATE
+(
+  LOAD NO SYNCH, 
+  SOLVE
+)]]>
+        </BuildSpecifications>
+      </AWCubeOrganization>
+    </Organization>
+    <Dimensionality
+      Name="FINAL_DATES"
+      ETKeyColumnName="FINAL_DATES"
+      Dimension="FINAL_DATES">
+    </Dimensionality>
+    <Dimensionality
+      Name="FINAL_DEPARTMENTS"
+      ETKeyColumnName="FINAL_DEPARTMENTS"
+      Dimension="FINAL_DEPARTMENTS">
+    </Dimensionality>
+    <Dimensionality
+      Name="FINAL_JOBS"
+      ETKeyColumnName="FINAL_JOBS"
+      Dimension="FINAL_JOBS">
+    </Dimensionality>
+    <Dimensionality
+      Name="FINAL_LOCATIONS"
+      ETKeyColumnName="FINAL_LOCATIONS"
+      Dimension="FINAL_LOCATIONS">
+    </Dimensionality>
+    <Dimensionality
+      Name="FINAL_EMPLOYEES"
+      ETKeyColumnName="FINAL_EMPLOYEES"
+      Dimension="FINAL_EMPLOYEES">
+    </Dimensionality>
+    <Classification
+      Value="SQLExpressions=true"/>
+    <Description
+      Type="LongDescription"
+      Language="AMERICAN"
+      Value="Final Sal Com Track">
+    </Description>
+    <Description
+      Type="ShortDescription"
+      Language="AMERICAN"
+      Value="Final Sal Com Track">
+    </Description>
+    <Description
+      Type="Description"
+      Language="AMERICAN"
+      Value="Final Sal Com Track">
+    </Description>
+    <ConsistentSolve>
+      <![CDATA[SOLVE 
+(
+  SUM
+    MAINTAIN COUNT
+     OVER ALL
+)]]>
+    </ConsistentSolve>
+  </Cube>
+</Metadata>
+<!--Generated by the Oracle Analytic Workspace Manager-->
